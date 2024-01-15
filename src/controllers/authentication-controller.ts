@@ -20,6 +20,14 @@ export async function Refresh(req: AuthenticatedRequest, res: Response) {
     const result = await authenticationService.refreshToken(codeId);
     return res.send(result);
   } catch (error) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
+    return res.status(httpStatus.NOT_FOUND).send(error);
+  }
+}
+
+export async function CheckToken(req: Request, res: Response) {
+  try {
+    return res.sendStatus(httpStatus.OK);
+  } catch (error) {
+    return res.status(httpStatus.UNAUTHORIZED).send(error);
   }
 }
