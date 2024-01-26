@@ -2,7 +2,8 @@ import "reflect-metadata";
 import "express-async-errors";
 import express, { Express } from "express";
 import cors from "cors";
-
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger.json";
 import { loadEnv, connectDb, disconnectDB } from "@/config";
 import { authenticationRouter, enrollmentsRouter } from "@/routers";
 
@@ -12,7 +13,8 @@ const app = express();
 app
   .use(cors())
   .use(express.json())
-  .get("/health", (_req, res) => res.send("OK!"))
+  .use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+  .get("/health", (_req, res) => res.send("Status da aplicação: ✅ Em execução"))
   .use("/auth", authenticationRouter)
   .use("/enrollment", enrollmentsRouter);
 

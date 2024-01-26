@@ -1,0 +1,154 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Api server from culturalize system app",
+    "version": "1.0.0",
+    "title": "Culturalize documentation",
+    "contact": {
+      "email": "cauayves5@gmail.com"
+    }
+  },
+  "host": "https://cult-front.vercel.app",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "health",
+      "description": "check status from app"
+    },
+    {
+      "name": "auth",
+      "description": "Authentication actions"
+    },
+    {
+      "name": "enrollment",
+      "description": "Operations for culture user data"
+    }
+  ],
+  "schemes": ["https", "http"],
+  "paths": {
+    "/health": {
+      "post": {
+        "tags": ["health"],
+        "summary": "check status from api",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "500": {
+            "description": "Server down :("
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "sign in route",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "body",
+            "description": "access code",
+            "required": true,
+            "type": "string",
+            "example": "OFCTESTER00"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "password for access",
+            "required": true,
+            "type": "string",
+            "example": "Test@2000"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "refresh existent user token",
+        "description": "send a token acces in the requisition header to refresh it",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "culturalize_auth": ["write:auth", "read:auth"]
+          }
+        ]
+      }
+    },
+    "/auth/check-token": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "check if user token are valid",
+        "description": "send a token acces in the requisition header to refresh it",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "422": {
+            "description": "Token expired or inexistent"
+          }
+        },
+        "security": [
+          {
+            "culturalize_auth": ["write:auth", "read:auth"]
+          }
+        ]
+      }
+    },
+    "/enrollment/cep": {
+      "post": {
+        "tags": ["enrollment"],
+        "summary": "get cep route",
+        "description": "will get information aboute provided cep",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "cep",
+            "in": "query",
+            "description": "postal code",
+            "required": true,
+            "type": "string",
+            "example": "20241900"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Cep not found"
+          }
+        }
+      }
+    }
+  }
+}
