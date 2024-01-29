@@ -23,7 +23,7 @@
     "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
     "dev:migration:generate": "npm run dev:load-envs prisma migrate dev",
     "dev:seed": "npm run dev:load-envs prisma db seed",
-    "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts"
+    "dev": "tsx watch --env-file .env src/server.ts"
   },
   "author": "Caua Yves",
   "license": "MIT",
@@ -56,9 +56,9 @@
     "prisma": "^5.7.0",
     "supertest": "^6.2.3",
     "ts-jest": "^26.5.5",
-    "ts-node": "^10.7.0",
     "tsconfig-paths": "3.9.0",
     "tscpaths": "^0.0.9",
+    "tsx": "^4.7.0",
     "ttypescript": "^1.5.13",
     "typescript": "^4.2.4",
     "typescript-transform-paths": "2.2.3"
@@ -84,6 +84,7 @@
     "qs": "^6.11.2",
     "query-string": "^7.1.1",
     "reflect-metadata": "^0.1.13",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "zod": "^3.22.4"
   }
 }
