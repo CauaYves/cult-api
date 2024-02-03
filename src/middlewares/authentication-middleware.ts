@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 import { prisma } from "../config/database";
 import { unauthorizedError } from "../errors/index";
+import { env } from "@/schemas";
 
 export async function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const authHeader = req.header("Authorization");
@@ -12,7 +13,7 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
   if (!token) return generateUnauthorizedResponse(res);
 
   try {
-    const { codeId } = jwt.verify(token, process.env.JWT_SECRET) as JWTPayload;
+    const { codeId } = jwt.verify(token, env.JWT_SECRET) as JWTPayload;
     const session = await prisma.session.findFirst({
       where: {
         codeId,
@@ -45,7 +46,7 @@ type JWTPayload = {
 
 async function isTokenExpired(token: string) {
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET) as { exp: number };
+    const decodedToken = jwt.verify(token, env.JWT_SECRET) as { exp: number };
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
     return decodedToken.exp < currentTimestamp;

@@ -4,6 +4,7 @@ import accessRepository from "@/repositories/access-repositories";
 import sessionRepository from "@/repositories/session-repository";
 import { notFoundError, unauthorizedError } from "@/errors";
 import jwt from "jsonwebtoken";
+import { env } from "@/schemas";
 
 const expiresTimeToken = "30d";
 
@@ -25,7 +26,7 @@ async function makeAccess(login: loginAccess) {
 async function createSession(codeId: number) {
   const existingSession = await sessionRepository.getSessionByCodeId(codeId);
 
-  const token = jwt.sign({ codeId }, process.env.JWT_SECRET, { expiresIn: expiresTimeToken });
+  const token = jwt.sign({ codeId }, env.JWT_SECRET, { expiresIn: expiresTimeToken });
 
   if (existingSession) {
     await sessionRepository.updateSessionToken(existingSession.id, token);

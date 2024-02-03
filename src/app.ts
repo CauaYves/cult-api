@@ -4,10 +4,8 @@ import express, { Express } from "express";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.json";
-import { loadEnv, connectDb, disconnectDB } from "@/config";
+import { connectDb, disconnectDB } from "@/config";
 import { authenticationRouter, enrollmentsRouter } from "@/routers";
-
-loadEnv();
 
 const app = express();
 app
